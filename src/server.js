@@ -21,7 +21,7 @@ const getGitFileHandler = async (req, res) => {
   res.send(result.file)
 }
   
-app.get('/gitFile/:name', getFileHandler) 
+app.get('/gitFile/:name', getGitFileHandler) 
 
 app.listen(8181, () => console.log("listening at port 8181"))
 // getFileHandler({send:x=>console.log})
