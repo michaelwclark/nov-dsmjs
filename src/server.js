@@ -11,16 +11,17 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 const getFileHandler = async (req, res) => {
-  const response = await getGetFile()
+  const fileName = req.params.name || "package.json"
+  console.log({fileName})
+  const response = await getGetFile(fileName)
   const data = Buffer.from(response.content, 'base64')
-  const contents = data.toString('ascii')
-  req.send(contents)
+  const decodedFile = data.toString('ascii')
+  const result = { file: decodedFile, name: response.name }
+  console.log(JSON.stringify(result, null, 3))
+  res.send(result.file)
 }
   
-app.get('/getFile', getFileHandler) 
+app.get('/getFile/:name', getFileHandler) 
 
 app.listen(8181, () => console.log("listening at port 8181"))
-
-
-// getGetFile() //?
-getFileHandler({send: console.log})
+// getFileHandler({send:x=>console.log})

@@ -5,10 +5,11 @@ export const getGetFile = async (branch = 'master', path = 'package.json') => {
   const response = await fetch(uri, {
     method: 'GET',
     headers: {
-      'Authorization': 'token dc39e05f573465a507b195c26bdaeec925e508bf',
+      'Authorization': `token ${process.env.GIT_API_TOKEN}`,
       'Accept': 'application/json'
     },
   })
+
   const body = await response.json()
   return body
 }
