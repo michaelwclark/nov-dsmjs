@@ -1,9 +1,10 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-// import graphqlHTTP from 'express-graphql'
-// import { graphqlRoot } from './data/graphQLRoot'
-// import { graphqlSchema } from './data/GraphQLSchema'
+
 import { getGitFile } from './getGitFile'
+import graphqlHTTP from 'express-graphql' 
+import { graphqlRoot } from './graphql/graphQLRoot'
+import { graphqlSchema } from './graphql/GraphQLSchema'
 
 const app = express()
 
@@ -22,6 +23,11 @@ const getGitFileHandler = async (req, res) => {
 }
   
 app.get('/gitFile/:name', getGitFileHandler) 
+app.use('/graphql', graphqlHTTP({
+  schema: graphqlSchema,
+  rootValue: graphqlRoot,
+  graphiql: true,
+}))
 
 // app.listen(8181, () => console.log("listening at port 8181"))
 getGitFileHandler({params:{name: "package.json"}}, {send:x=>console.log})
