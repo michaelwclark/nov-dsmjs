@@ -1,3 +1,5 @@
+import {getGitFile} from '../getGitFile'
+
 const helloWorld = name => {  
   if(name) {
     return {
@@ -9,10 +11,20 @@ const helloWorld = name => {
   }
 }
 
-export const getFile = (name) => {
+
+export const FileResolver = async (args) => {
+  const { FileInput } = args
+  let branch, path
+  if(FileInput) {
+    branch = FileInput.branch
+    path = FileInput.path
+  }
+  const gitFile = await getGitFile(branch, path)
+  const data = Buffer.from(gitFile.content, 'base64')
+  const decodedFile = data.toString('ascii')
   return {
-    name: 'YourMomsFile.mp4',
-    contents: '<?php print_r("Hey Mike") ?>'
+    name: gitFile.name,
+    contents: decodedFile,
   }
 }
 
@@ -21,7 +33,7 @@ export const graphqlRoot = {
     HelloWorld: (args, context) => {
       return helloWorld(args.name)
     },
-    getFile: (args, context) => {
-      return getFile(args.name)
+    File: (args, context) => {
+      return FileResolver(args)
     }
 }
