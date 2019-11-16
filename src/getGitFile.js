@@ -13,7 +13,8 @@ export const getGitFile = async (branch = 'master', path = 'package.json', repo 
       'Accept': 'application/json'
     },
   })
-
+  
   const body = await response.json()
+  console.log(JSON.stringify(body, null, 3))
   return body
 }
